@@ -1,8 +1,30 @@
+#include "PeekMenu.h"
+#include "papyrus.h"
+
+const SKSE::MessagingInterface* g_messaging = nullptr;
+
+static void SKSEMessageHandler(SKSE::MessagingInterface::Message* message)
+{
+	switch (message->type) {
+	case SKSE::MessagingInterface::kDataLoaded:
+		CustomPeekMenu::Register();
+		break;
+
+	case SKSE::MessagingInterface::kNewGame:
+		CustomPeekMenu::Show();
+		break;
+
+	case SKSE::MessagingInterface::kPostLoadGame:
+		CustomPeekMenu::Show();
+		break;
+	}
+}
+
 #ifdef SKYRIM_AE
 extern "C" DLLEXPORT constinit auto SKSEPlugin_Version = []() {
 	SKSE::PluginVersionData v;
 	v.PluginVersion(Version::MAJOR);
-	v.PluginName("examplePlugin");
+	v.PluginName("Take A Peek Custom IMenu");
 	v.AuthorName("OsmosisWrench");
 	v.UsesAddressLibrary(true);
 	v.CompatibleVersions({ SKSE::RUNTIME_LATEST });
@@ -31,7 +53,7 @@ extern "C" DLLEXPORT bool SKSEAPI SKSEPlugin_Query(const SKSE::QueryInterface* a
 	logger::info(FMT_STRING("{} v{}"), Version::PROJECT, Version::NAME);
 
 	a_info->infoVersion = SKSE::PluginInfo::kVersion;
-	a_info->name = "examplePlugin";
+	a_info->name = "Take A Peek Custom IMenu";
 	a_info->version = Version::MAJOR;
 
 	if (a_skse->IsEditor()) {
@@ -54,6 +76,16 @@ extern "C" DLLEXPORT bool SKSEAPI SKSEPlugin_Load(const SKSE::LoadInterface* a_s
 	logger::info("loaded plugin");
 
 	SKSE::Init(a_skse);
+
+	auto papy = SKSE::GetPapyrusInterface();
+	papy->Register(papyrus::Bind);
+
+	g_messaging = SKSE::GetMessagingInterface();
+	if (!g_messaging) {
+		logger::critical("Failed to load messaging interface! This error is fatal, plugin will not load.");
+		return false;
+	}
+	g_messaging->RegisterListener("SKSE", SKSEMessageHandler);
 
 	return true;
 }

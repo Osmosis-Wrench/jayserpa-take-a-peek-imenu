@@ -176,8 +176,7 @@ add_library(
 	${sources}
 	${CMAKE_CURRENT_BINARY_DIR}/include/Version.h
 	${CMAKE_CURRENT_BINARY_DIR}/version.rc
-	.clang-format
-	 "src/events.h")
+	.clang-format "src/PeekMenu.h" "src/PeekMenu.cpp" "src/papyrus.h" "src/papyrus.cpp")
 
 target_compile_features(
 	${PROJECT_NAME}
@@ -248,8 +247,8 @@ if (MSVC)
 			/external:anglebrackets
 			/external:W0
 
-			/W4	# Warning level
-			/WX	# Warning level (warnings are errors)
+			/W3	# Warning level
+			#/WX	# Warning level (warnings are errors)
 
 			"$<$<CONFIG:DEBUG>:>"
 			"$<$<CONFIG:RELEASE>:/Zc:inline;/JMC-;/Ob3>"
