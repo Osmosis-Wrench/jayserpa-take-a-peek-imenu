@@ -1,5 +1,5 @@
 #include "PeekMenu.h"
-#include "papyrus.h"
+#include "Papyrus.h"
 
 const SKSE::MessagingInterface* g_messaging = nullptr;
 
@@ -11,11 +11,11 @@ static void SKSEMessageHandler(SKSE::MessagingInterface::Message* message)
 		break;
 
 	case SKSE::MessagingInterface::kNewGame:
-		CustomPeekMenu::Show();
+		//CustomPeekMenu::Show();
 		break;
 
 	case SKSE::MessagingInterface::kPostLoadGame:
-		CustomPeekMenu::Show();
+		//CustomPeekMenu::Show();
 		break;
 	}
 }
@@ -77,8 +77,8 @@ extern "C" DLLEXPORT bool SKSEAPI SKSEPlugin_Load(const SKSE::LoadInterface* a_s
 
 	SKSE::Init(a_skse);
 
-	auto papy = SKSE::GetPapyrusInterface();
-	papy->Register(papyrus::Bind);
+	const auto papyrus = SKSE::GetPapyrusInterface();
+	papyrus->Register(Papyrus::Bind);
 
 	g_messaging = SKSE::GetMessagingInterface();
 	if (!g_messaging) {

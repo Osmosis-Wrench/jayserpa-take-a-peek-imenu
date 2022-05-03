@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.20)
-set(NAME "exampleplugin")
+set(NAME "keyholepeekmenu")
 set(VERSION 1.0.0)
 set(VR_VERSION 1)
 set(AE_VERSION 1)
@@ -77,7 +77,7 @@ set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>" CACHE STR
 # ---- Project ----
 
 project(
-	exampleplugin
+	keyholepeekmenu
 	VERSION 1.0.0
 	LANGUAGES CXX
 )
@@ -176,7 +176,7 @@ add_library(
 	${sources}
 	${CMAKE_CURRENT_BINARY_DIR}/include/Version.h
 	${CMAKE_CURRENT_BINARY_DIR}/version.rc
-	.clang-format "src/PeekMenu.h" "src/PeekMenu.cpp" "src/papyrus.h" "src/papyrus.cpp")
+	.clang-format "src/PeekMenu.h" "src/PeekMenu.cpp" "src/Papyrus.h" "src/Papyrus.cpp")
 
 target_compile_features(
 	${PROJECT_NAME}

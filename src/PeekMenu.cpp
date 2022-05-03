@@ -6,7 +6,7 @@ CustomPeekMenu::CustomPeekMenu()
 	auto scaleformManager = RE::BSScaleformManager::GetSingleton();
 
 	inputContext = Context::kNone;
-	depthPriority = 100;
+	depthPriority = 1;
 
 	menuFlags.set(RE::UI_MENU_FLAGS::kModal);
 

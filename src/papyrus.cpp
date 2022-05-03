@@ -1,45 +1,51 @@
-#include "papyrus.h"
+#include "Papyrus.h"
 #include "PeekMenu.h"
 
-#define BIND(a_method, ...) a_vm.RegisterFunction(#a_method##sv, script, a_method __VA_OPT__(, ) __VA_ARGS__)
-
-namespace papyrus
+namespace Papyrus
 {
-	void papyrus::OpenKeyholeMenu(VM* a_vm, StackID a_stackID, RE::StaticFunctionTag*)
-	{
-		logger::info("Open Menu request.");
-		SKSE::GetTaskInterface()->AddUITask([]() {
-			CustomPeekMenu::Show();
-		});
-	}
-
-	void papyrus::CloseKeyholeMenu(VM* a_vm, StackID a_stackID, RE::StaticFunctionTag*)
-	{
-		logger::info("Close Menu request.");
-		SKSE::GetTaskInterface()->AddUITask([]() {
-			CustomPeekMenu::Show();
-		});
-	}
-
-	bool papyrus::IsKeyholePluginInstalled(VM* a_vm, StackID a_stackID, RE::StaticFunctionTag*)
-	{
-		logger::info("Request for plugin existance detected.");
-		return true;
-	}
-
-	bool papyrus::Bind(VM* a_vm)
+	bool Bind(VM* a_vm)
 	{
 		if (!a_vm) {
-			logger::info("No Virtual Machine!");
+			logger::critical("couldn't get VM State"sv);
 			return false;
 		}
 
-		//BIND(papyrus::OpenKeyholeMenu);
+		logger::info("{:*^30}", "FUNCTIONS"sv);
 
-		a_vm->RegisterFunction("OpenKeyholeMenu", "Keyhole", papyrus::OpenKeyholeMenu);
-		//a_vm->RegisterFunction("CloseKeyholeMenu", "Keyhole", CloseKeyholeMenu);
-		a_vm->RegisterFunction("IsKeyholePluginInstalled", "Keyhole", papyrus::IsKeyholePluginInstalled);
-		logger::info("bound functions");
+		Keyhole::Bind(*a_vm);
+
 		return true;
+	}
+
+	std::uint32_t Keyhole::IsKeyholePluginInstalled(VM*, StackID, RE::StaticFunctionTag*)
+	{
+		std::uint32_t a = 1;
+		return a;
+	}
+
+	void Keyhole::OpenKeyholeMenu(VM*, StackID, RE::StaticFunctionTag*)
+	{
+		SKSE::GetTaskInterface()->AddUITask([]() {
+			CustomPeekMenu::Show();
+		});
+	}
+
+	void Keyhole::CloseKeyholeMenu(VM*, StackID, RE::StaticFunctionTag*)
+	{
+		SKSE::GetTaskInterface()->AddUITask([]() {
+			CustomPeekMenu::Hide();
+		});
+	}
+
+	void Keyhole::Bind(VM& a_vm)
+	{
+		constexpr auto script = "Keyhole"sv;
+
+		a_vm.RegisterFunction("IsKeyholePluginInstalled", script, IsKeyholePluginInstalled, true);
+
+		a_vm.RegisterFunction("OpenKeyholeMenu", script, OpenKeyholeMenu);
+		a_vm.RegisterFunction("CloseKeyholeMenu", script, CloseKeyholeMenu);
+
+		logger::info("Registered keyhole functions"sv);
 	}
 }
