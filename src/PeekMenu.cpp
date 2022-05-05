@@ -10,7 +10,7 @@ CustomPeekMenu::CustomPeekMenu()
 
 	menuFlags.set(RE::UI_MENU_FLAGS::kModal);
 
-	scaleformManager->LoadMovieEx(this, MENU_PATH, [](RE::GFxMovieDef* a_def) -> void {
+	scaleformManager->LoadMovieEx(this, MENU_PATH, RE::GFxMovieView::ScaleModeType::kNoBorder, 0.0, [](RE::GFxMovieDef* a_def) -> void {
 		a_def->SetState(RE::GFxState::StateType::kLog,
 			RE::make_gptr<Logger>().get());
 	});
