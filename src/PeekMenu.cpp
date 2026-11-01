@@ -1,4 +1,3 @@
-#pragma once
 #include "PeekMenu.h"
 
 CustomPeekMenu::CustomPeekMenu()

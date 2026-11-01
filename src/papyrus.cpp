@@ -1,4 +1,4 @@
-#include "Papyrus.h"
+#include "papyrus.h"
 #include "PeekMenu.h"
 
 namespace Papyrus
